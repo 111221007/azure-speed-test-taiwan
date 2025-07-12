@@ -7,29 +7,15 @@ import { AzureRoutingModule } from './azure-routing.module'
 import { AzureComponent } from './azure.component'
 import {
   AboutComponent,
-  CDNComponent,
-  DownloadComponent,
-  IPLookupComponent,
-  LatencyComponent,
-  PSPingComponent,
-  RegionToRegionLatencyComponent,
-  UploadComponent,
-  UploadLargeFileComponent
+  LatencyComponent
 } from './index'
 
 @NgModule({
   bootstrap: [],
   declarations: [
     AboutComponent,
-    CDNComponent,
-    DownloadComponent,
-    IPLookupComponent,
     LatencyComponent,
-    PSPingComponent,
-    RegionToRegionLatencyComponent,
-    AzureComponent,
-    UploadComponent,
-    UploadLargeFileComponent
+    AzureComponent
   ],
   exports: [],
   imports: [

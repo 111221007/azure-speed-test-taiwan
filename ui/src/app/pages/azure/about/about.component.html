@@ -1,103 +1,74 @@
 <div class="container-fluid py-3">
-  <h1 class="h2 fw-bold">About AzureSpeed</h1>
-  <p>
-    <a href="https://www.azurespeed.com" title="Azure Speed Test" class="fw-bold">AzureSpeed.com</a>
-    is a speed test tool that measures your network latency, download, and upload speeds across
-    multiple global Azure regions. You can use it find the best Azure region to get start.
+  <h1 class="h2 fw-bold">Azure AWS Latency Testing - 111221007</h1>
+  <p class="lead">
+    This project is a web-based tool designed to measure network latency to various AWS regions worldwide. 
+    It provides users with a simple interface to test the AWS latency from the local machine.
   </p>
-  <p>
-    This site is independently maintained by
-    <a href="https://github.com/blrchen" target="_blank" title="Blair Chen's Github Profile">
-      Blair Chen
-    </a>
-    and other GitHub volunteers, start from 2013. This site is not officially associated with
-    Microsoft. All data presented is sourced from publicly available APIs provided by Microsoft
-    Azure. For more details on how this site is built, visit the
-    <a
-      href="https://github.com/blrchen/azure-speed-test"
-      target="_blank"
-      title="AzureSpeed Github Repository"
-    >
-      AzureSpeed GitHub repository
-    </a>
-    .
-  </p>
-  <p>
-    <strong>Funding and ads:</strong>
-    <br />
-    AzureSpeed is maintained during spare time and is personally funded; ads are displayed to help
-    cover the costs.
-  </p>
-  <h2 class="h4">Frequently Asked Questions</h2>
-  <div class="accordion" id="faqAccordion">
-    <div class="accordion-item">
-      <h3 class="accordion-header" id="headingOne">
-        <button
-          class="accordion-button collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseOne"
-          aria-expanded="false"
-          aria-controls="collapseOne"
-        >
-          How can I provide feedback or report bugs?
-        </button>
-      </h3>
-      <div
-        id="collapseOne"
-        class="accordion-collapse collapse"
-        aria-labelledby="headingOne"
-        data-bs-parent="#faqAccordion"
-      >
-        <div class="accordion-body">
-          <p>
-            If you come across any bugs or have a feature suggestion, kindly create an issue on
-            <a
-              href="https://github.com/blrchen/azure-speed-test/issues"
-              target="_blank"
-              title="AzureSpeed GitHub Issues"
-            >
-              GitHub
-            </a>
-            .
-          </p>
-        </div>
-      </div>
+  
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h2 class="h4 mb-3">✨ Features</h2>
+      <ul class="list-unstyled">
+        <li class="mb-2">
+          <i class="fas fa-globe text-primary me-2"></i>
+          <strong>Real-time latency testing</strong> to AWS regions
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-chart-line text-primary me-2"></i>
+          <strong>Interactive charts</strong> showing latency over time
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-trophy text-primary me-2"></i>
+          <strong>Top 3 fastest regions</strong> ranking
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-map-marker-alt text-primary me-2"></i>
+          <strong>🇹🇼 Taiwan region</strong> included for local testing
+        </li>
+      </ul>
     </div>
-    <div class="accordion-item">
-      <h3 class="accordion-header" id="headingTwo">
-        <button
-          class="accordion-button collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseTwo"
-          aria-expanded="false"
-          aria-controls="collapseTwo"
-        >
-          How can I contribute to the project?
-        </button>
-      </h3>
-      <div
-        id="collapseTwo"
-        class="accordion-collapse collapse"
-        aria-labelledby="headingTwo"
-        data-bs-parent="#faqAccordion"
-      >
-        <div class="accordion-body">
-          <p>
-            We welcome and greatly appreciate your contributions. If you're interested in
-            contributing, please fork the project on
-            <a
-              href="https://github.com/blrchen/azure-speed-test"
-              target="_blank"
-              title="AzureSpeed GitHub Repository"
-            >
-              GitHub
-            </a>
-            and submit a pull request.
-          </p>
-        </div>
-      </div>
+    
+    <div class="col-md-6">
+      <h2 class="h4 mb-3">🛠️ Technology Stack</h2>
+      <ul class="list-unstyled">
+        <li class="mb-2">
+          <i class="fas fa-bolt text-success me-2"></i>
+          <strong>Angular 18</strong> with Server-Side Rendering
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-paint-brush text-success me-2"></i>
+          <strong>Bootstrap 5</strong> for responsive design
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-chart-bar text-success me-2"></i>
+          <strong>ngx-charts</strong> for data visualization
+        </li>
+        <li class="mb-2">
+          <i class="fas fa-cloud text-success me-2"></i>
+          <strong>Heroku</strong> for cloud deployment
+        </li>
+      </ul>
     </div>
+  </div>
+  
+  <div class="mt-5">
+    <h2 class="h4 mb-3">How it works</h2>
+    <div class="alert alert-info">
+      <i class="fas fa-info-circle me-2"></i>
+      The application sends HTTP requests to AWS S3 buckets in different regions and measures the response time. 
+      This gives you an accurate measurement of network latency from your location to various AWS data centers.
+    </div>
+  </div>
+  
+  <div class="mt-4">
+    <h2 class="h4 mb-3">Getting Started</h2>
+    <p>
+      Navigate to the <strong>Azure Latency Test</strong> page to start testing your connection to different AWS regions. 
+      The tool will automatically measure latency and provide you with real-time results and rankings.
+    </p>
+    <a href="/Azure/Latency" class="btn btn-primary">
+      <i class="fas fa-tachometer-alt me-2"></i>
+      Start Latency Test
+    </a>
   </div>
 </div>

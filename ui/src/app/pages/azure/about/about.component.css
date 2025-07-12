@@ -1,0 +1,54 @@
+/* About page styling with olive green theme */
+
+.h2 {
+  color: #808000;
+  border-bottom: 2px solid #808000;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.h4 {
+  color: #6b6b00;
+  margin-bottom: 1rem;
+}
+
+.text-primary {
+  color: #808000 !important;
+}
+
+.text-success {
+  color: #6b6b00 !important;
+}
+
+.alert-info {
+  background-color: rgba(128, 128, 0, 0.1);
+  border-color: #808000;
+  color: #4a4a00;
+}
+
+.alert-info .fas {
+  color: #808000;
+}
+
+.btn-primary {
+  background-color: #808000;
+  border-color: #808000;
+}
+
+.btn-primary:hover {
+  background-color: #6b6b00;
+  border-color: #6b6b00;
+}
+
+.lead {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.list-unstyled li {
+  padding: 0.25rem 0;
+}
+
+.list-unstyled li strong {
+  color: #333;
+}

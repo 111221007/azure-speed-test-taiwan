@@ -25,7 +25,8 @@ interface LatencyTestResult {
 
 @Component({
   selector: 'app-azure-latency',
-  templateUrl: './latency.component.html'
+  templateUrl: './latency.component.html',
+  styleUrls: ['./latency.component.css']
 })
 export class LatencyComponent implements OnInit, OnDestroy {
   private static readonly MAX_PING_ATTEMPTS = 180;

@@ -1,0 +1,112 @@
+/* Latency component styling with olive green theme */
+
+.h2 {
+  color: #808000;
+  border-bottom: 2px solid #808000;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.h4, .h5 {
+  color: #6b6b00;
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: #808000;
+  border-color: #808000;
+}
+
+.btn-primary:hover {
+  background-color: #6b6b00;
+  border-color: #6b6b00;
+}
+
+.btn-primary:disabled {
+  background-color: #a0a060;
+  border-color: #a0a060;
+}
+
+.alert-info {
+  background-color: rgba(128, 128, 0, 0.1);
+  border-color: #808000;
+  color: #4a4a00;
+}
+
+.alert-info .fas {
+  color: #808000;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(128, 128, 0, 0.05);
+}
+
+.table th {
+  background-color: rgba(128, 128, 0, 0.1);
+  border-color: #808000;
+  color: #333;
+}
+
+.badge-success {
+  background-color: #6b6b00;
+}
+
+.text-success {
+  color: #6b6b00 !important;
+}
+
+.text-primary {
+  color: #808000 !important;
+}
+
+/* Chart container styling */
+.chart-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fafafa;
+}
+
+/* Loading spinner with olive green */
+.spinner-border {
+  color: #808000;
+}
+
+.loading-text {
+  color: #6b6b00;
+}
+
+/* Top regions styling */
+.top-regions {
+  background-color: rgba(128, 128, 0, 0.05);
+  border-left: 4px solid #808000;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.top-regions h5 {
+  color: #808000;
+  margin-bottom: 0.5rem;
+}
+
+/* Latency values styling */
+.latency-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.latency-excellent {
+  color: #6b6b00;
+}
+
+.latency-good {
+  color: #808000;
+}
+
+.latency-fair {
+  color: #b8860b;
+}
+
+.latency-poor {
+  color: #cd853f;
+}
