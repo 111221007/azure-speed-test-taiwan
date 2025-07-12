@@ -11,9 +11,9 @@ RUN dotnet publish "AzureSpeed.csproj" -c Release -o /app/publish
 FROM node:20-alpine AS build-frontend
 WORKDIR /app
 COPY ["ui/package.json", "ui/package-lock.json*", "./"]
-RUN npm ci --omit=dev
+RUN npm ci
 COPY ui/ .
-RUN npm run build
+RUN npm run build:prod
 
 # Use a .NET runtime image to serve the application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
