@@ -1,0 +1,115 @@
+name: Deploy Azure Speed Test to Heroku
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+env:
+  HEROKU_APP_NAME: azure-speed-test-taiwan
+  NODE_VERSION: '18.x'
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: ui/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd ui
+        npm ci
+    
+    - name: Build Angular app
+      run: |
+        cd ui
+        npm run build --prod
+    
+    - name: Upload frontend artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: ui/dist/
+        retention-days: 1
+
+  build-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Restore dependencies
+      run: |
+        cd api/AzureSpeed
+        dotnet restore
+    
+    - name: Build backend
+      run: |
+        cd api/AzureSpeed
+        dotnet build --configuration Release --no-restore
+    
+    - name: Test backend
+      run: |
+        cd api/AzureSpeed
+        dotnet test --configuration Release --no-build --verbosity normal
+    
+    - name: Publish backend
+      run: |
+        cd api/AzureSpeed
+        dotnet publish --configuration Release --no-build --output ./publish
+    
+    - name: Upload backend artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-build
+        path: api/AzureSpeed/publish/
+        retention-days: 1
+
+  deploy-to-heroku:
+    needs: [build-frontend, build-backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.14
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: ${{ env.HEROKU_APP_NAME }}
+        heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        usedocker: false
+
+  notify-deployment:
+    needs: [deploy-to-heroku]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      run: |
+        if [ "${{ needs.deploy-to-heroku.result }}" == "success" ]; then
+          echo "✅ Deployment successful!"
+          echo "🌐 Application: https://${{ env.HEROKU_APP_NAME }}.herokuapp.com"
+        else
+          echo "❌ Deployment failed!"
+        fi
