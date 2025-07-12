@@ -1,7 +1,7 @@
-# Azure Speed Test - Heroku Deployment Script
-# This script will prepare and deploy the application to Heroku
+# Azure Speed Test - Heroku Production Deployment Script
+# This script will deploy the application to Heroku using Docker containers
 
-Write-Host "Starting Heroku deployment preparation..." -ForegroundColor Green
+Write-Host "Starting Heroku production deployment..." -ForegroundColor Green
 
 # Check if git is available
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -22,14 +22,14 @@ if (-not (Test-Path "package.json")) {
     exit 1
 }
 
-# Build the application
-Write-Host "Building the application..." -ForegroundColor Yellow
-node build.js
+# Set Heroku stack to container
+Write-Host "Setting Heroku stack to container..." -ForegroundColor Yellow
+heroku stack:set container
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Build failed. Please check the errors above." -ForegroundColor Red
-    exit 1
-}
+# Set environment variables
+Write-Host "Setting environment variables..." -ForegroundColor Yellow
+heroku config:set ASPNETCORE_ENVIRONMENT=Production
+heroku config:set NODE_ENV=production
 
 # Check git status
 Write-Host "Checking git status..." -ForegroundColor Yellow
@@ -37,27 +37,12 @@ $gitStatus = git status --porcelain
 if ($gitStatus) {
     Write-Host "Uncommitted changes found. Adding all changes..." -ForegroundColor Yellow
     git add .
-    git commit -m "Prepare for Heroku deployment - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    git commit -m "Production deployment - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 }
 
-# Check if heroku remote exists
-$herokuRemote = git remote -v | Select-String "heroku"
-if (-not $herokuRemote) {
-    Write-Host "Heroku remote not found. Please create a Heroku app first:" -ForegroundColor Red
-    Write-Host "  heroku create your-app-name" -ForegroundColor Yellow
-    Write-Host "  or" -ForegroundColor Yellow
-    Write-Host "  heroku git:remote -a your-existing-app-name" -ForegroundColor Yellow
-    exit 1
-}
-
-# Set required environment variables
-Write-Host "Setting environment variables..." -ForegroundColor Yellow
-heroku config:set ASPNETCORE_ENVIRONMENT=Production
-heroku config:set NODE_ENV=production
-
-# Set stack to container for Docker deployment
-Write-Host "Setting stack to container..." -ForegroundColor Yellow
-heroku stack:set container
+# Push to origin first
+Write-Host "Pushing to origin..." -ForegroundColor Yellow
+git push origin master
 
 # Deploy to Heroku
 Write-Host "Deploying to Heroku..." -ForegroundColor Green
@@ -69,6 +54,7 @@ if ($LASTEXITCODE -eq 0) {
     heroku open
 } else {
     Write-Host "Deployment failed. Check logs with: heroku logs --tail" -ForegroundColor Red
+    exit 1
 }
 
-Write-Host "Deployment script completed." -ForegroundColor Green
+Write-Host "Production deployment completed successfully!" -ForegroundColor Green
