@@ -54,25 +54,30 @@
       </tbody>
     </table>
   </div>
-  <div class="latency-chart-container" *ngIf="chartDataSeries && chartDataSeries.length > 0">
-    <ngx-charts-line-chart
-      [results]="chartDataSeries"
-      [scheme]="colorScheme"
-      [animations]="false"
-      [rangeFillOpacity]="1"
-      [xAxis]="true"
-      [yAxis]="true"
-      [roundDomains]="true"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      [curve]="curve"
-      [xAxisTicks]="xAxisTicks"
-      [yScaleMin]="0"
-      [legend]="true"
-      [legendPosition]="legendPosition"
-      [legendTitle]="''"
-    ></ngx-charts-line-chart>
-  </div>
+
+<div class="latency-chart-container" *ngIf="chartDataSeries && chartDataSeries.length > 0">
+  <ngx-charts-line-chart
+  [results]="chartDataSeries"
+  [scheme]="colorScheme"
+  [animations]="false"
+  [rangeFillOpacity]="1"
+  [xAxis]="true"
+  [yAxis]="true"
+  [roundDomains]="true"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  [xAxisLabel]="'Time'"
+  [yAxisLabel]="'Latency (ms)'"
+  [curve]="curve"
+  [yScaleMin]="0"
+  [legend]="true"
+  [legendPosition]="legendPosition"
+  [legendTitle]="''"
+  [autoScale]="true" 
+></ngx-charts-line-chart>
+
+</div>
+
 
   <div class="alert alert-info alert-dismissible fade show">
     <strong>Important Note:</strong>

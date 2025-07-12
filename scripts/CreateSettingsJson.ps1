@@ -15,7 +15,7 @@
 
 function GetAzureStorages {
     param (
-        [string]$resourceGroupName = "azure-speed-test-blobs"
+        [string]$resourceGroupName = "benchmarkingazure"
     )
     $storageJsonObjects = New-Object System.Collections.Generic.List[System.Object]
 
@@ -61,5 +61,5 @@ function CreateSettingsJsonFile {
     $settingsJson | ConvertTo-Json -Depth 100 -Compress:$false | Out-File -Encoding utf8 -FilePath $outFilePath
 }
 
-$storageJsonObjects = GetAzureStorages
+$storageJsonObjects = GetAzureStorages -resourceGroupName "benchmarkingazure"
 CreateSettingsJsonFile -storageJsonObjects $storageJsonObjects
