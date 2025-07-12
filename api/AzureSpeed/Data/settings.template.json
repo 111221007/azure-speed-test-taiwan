@@ -1,0 +1,9 @@
+{
+    "accounts": [
+        {
+            "key": "${AZURE_STORAGE_KEY}",
+            "name": "azurespeedteststorage",
+            "locationId": "japanwest"
+        }
+    ]
+}
