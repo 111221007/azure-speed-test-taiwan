@@ -6,12 +6,12 @@ namespace AzureSpeed.WebApp
     // ChatGPT models
     public class ChatCompletionRequest
     {
-        public string AccessToken { get; set; }
-        public string SystemPromptId { get; set; }
-        public string SystemPrompt { get; set; }
-        public string UserContent { get; set; }
-        public string ResponseLanguage { get; set; }
-        public string ProgramLanguage { get; set; }
+        public required string AccessToken { get; set; }
+        public required string SystemPromptId { get; set; }
+        public required string SystemPrompt { get; set; }
+        public required string UserContent { get; set; }
+        public required string ResponseLanguage { get; set; }
+        public required string ProgramLanguage { get; set; }
     }
     public class ChatCompletionResponse
     {
@@ -65,20 +65,20 @@ namespace AzureSpeed.WebApp
     public class StorageAccount
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [JsonProperty("key")]
-        public string Key { get; set; }
+        public required string Key { get; set; }
 
         [JsonProperty("locationId")]
-        public string LocationId { get; set; }
+        public required string LocationId { get; set; }
 
         [JsonProperty("endpointSuffix")]
-        public string EndpointSuffix { get; set; }
+        public string EndpointSuffix { get; set; } = "core.windows.net";
     }
 
     public class Settings
     {
-        public IEnumerable<StorageAccount> Accounts { get; set; }
+        public required IEnumerable<StorageAccount> Accounts { get; set; }
     }
 }

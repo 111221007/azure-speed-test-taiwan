@@ -1,4 +1,4 @@
-name: Deploy Azure Speed Test to Production
+name: Deploy Azure Speed Test to Heroku
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
     branches: [ main, master ]
 
 env:
-  AZURE_WEBAPP_NAME: azure-speed-test-taiwan
-  AZURE_RESOURCE_GROUP: azure-speed-test-prod
+  HEROKU_APP_NAME: azure-speed-test-taiwan
   NODE_VERSION: '18.x'
   DOTNET_VERSION: '8.0.x'
 
@@ -83,57 +82,34 @@ jobs:
         path: api/AzureSpeed/publish/
         retention-days: 1
 
-  deploy-to-azure:
+  deploy-to-heroku:
     needs: [build-frontend, build-backend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     
     steps:
-    - name: Download backend artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: backend-build
-        path: ./backend-build
+    - name: Checkout code
+      uses: actions/checkout@v4
     
-    - name: Download frontend artifacts
-      uses: actions/download-artifact@v4
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.14
       with:
-        name: frontend-build
-        path: ./frontend-build
-    
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Deploy backend to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ./backend-build
-    
-    - name: Deploy frontend to Azure Static Web Apps
-      uses: Azure/static-web-apps-deploy@v1
-      with:
-        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        action: "upload"
-        app_location: "./frontend-build"
-        output_location: ""
-        skip_app_build: true
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: ${{ env.HEROKU_APP_NAME }}
+        heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        usedocker: false
 
   notify-deployment:
-    needs: [deploy-to-azure]
+    needs: [deploy-to-heroku]
     runs-on: ubuntu-latest
     if: always()
     
     steps:
     - name: Notify deployment status
       run: |
-        if [ "${{ needs.deploy-to-azure.result }}" == "success" ]; then
+        if [ "${{ needs.deploy-to-heroku.result }}" == "success" ]; then
           echo "✅ Deployment successful!"
-          echo "🌐 Frontend: https://${{ env.AZURE_WEBAPP_NAME }}-frontend.azurestaticapps.net"
-          echo "🔗 Backend: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+          echo "🌐 Application: https://${{ env.HEROKU_APP_NAME }}.herokuapp.com"
         else
           echo "❌ Deployment failed!"
         fi
