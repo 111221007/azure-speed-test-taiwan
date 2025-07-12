@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "Azure Speed Test Application",
   "scripts": {
-    "build": "chmod +x heroku-build.sh && ./heroku-build.sh",
+    "build": "node build.js",
     "start": "cd api/AzureSpeed && dotnet AzureSpeed.dll --urls http://+:$PORT",
-    "heroku-postbuild": "cd ui && npm install && ./node_modules/.bin/ng build --configuration production"
+    "heroku-postbuild": "node build.js"
   },
   "engines": {
     "node": "18.x",
     "npm": "9.x"
   },
   "dependencies": {
-    "@angular/cli": "^18.2.0",
-    "@angular/compiler-cli": "^18.2.0",
+    "@angular/cli": "^18.2.12",
+    "@angular/compiler-cli": "^18.2.0", 
     "typescript": "~5.5.2"
   },
   "devDependencies": {}
