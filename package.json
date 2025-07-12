@@ -1,0 +1,16 @@
+{
+  "name": "azure-speed-test",
+  "version": "1.0.0",
+  "description": "Azure Speed Test Application",
+  "scripts": {
+    "build": "cd ui && npm install && npm run build",
+    "start": "cd api/AzureSpeed && dotnet AzureSpeed.dll --urls http://+:$PORT",
+    "heroku-postbuild": "cd ui && npm install && npm run build:prod"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

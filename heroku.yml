@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: cd api/AzureSpeed && dotnet AzureSpeed.dll --urls http://+:$PORT

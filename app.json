@@ -1,0 +1,32 @@
+{
+  "name": "Azure Speed Test",
+  "description": "Azure network speed testing application",
+  "repository": "https://github.com/111221007/azure-speed-test-taiwan",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["azure", "speed-test", "network", "dotnet", "angular"],
+  "image": "heroku/nodejs",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku-community/dotnet-core"
+    }
+  ],
+  "env": {
+    "AZURE_STORAGE_KEY": {
+      "description": "Azure Storage Account Access Key",
+      "required": true
+    },
+    "AZURE_STORAGE_CONNECTION_STRING": {
+      "description": "Azure Storage Connection String",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
+}
