@@ -56,15 +56,19 @@ IDictionary<string, StorageAccount> LoadStorageAccounts(IWebHostEnvironment envi
         }
         
         // Create default settings file
+        var defaultKey = Environment.GetEnvironmentVariable("AZURE_STORAGE_KEY") ?? "default-key-from-env";
+        var defaultAccountName = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME") ?? "azurespeedteststorage";
+        var defaultLocation = Environment.GetEnvironmentVariable("AZURE_STORAGE_LOCATION") ?? "japanwest";
+        
         var defaultSettings = new Settings
         {
             Accounts = new List<StorageAccount>
             {
                 new StorageAccount
                 {
-                    Key = "edSoY+eK74ytXDXjIsNuybXU9DHC+dqhnjPSAfxNjxGJ0Mvc72dvYqW5KhKB129/UyYzxqiMMdxq+AStPPXKsQ==",
-                    Name = "azurespeedteststorage",
-                    LocationId = "japanwest"
+                    Key = defaultKey,
+                    Name = defaultAccountName,
+                    LocationId = defaultLocation
                 }
             }
         };
@@ -74,6 +78,12 @@ IDictionary<string, StorageAccount> LoadStorageAccounts(IWebHostEnvironment envi
     }
     
     string settingsContent = File.ReadAllText(settingsFilePath);
+    
+    // Replace environment variable placeholders
+    settingsContent = settingsContent.Replace("${AZURE_STORAGE_KEY}", Environment.GetEnvironmentVariable("AZURE_STORAGE_KEY") ?? "default-key");
+    settingsContent = settingsContent.Replace("${AZURE_STORAGE_ACCOUNT_NAME}", Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME") ?? "azurespeedteststorage");
+    settingsContent = settingsContent.Replace("${AZURE_STORAGE_LOCATION}", Environment.GetEnvironmentVariable("AZURE_STORAGE_LOCATION") ?? "japanwest");
+    
     var settings = JsonConvert.DeserializeObject<Settings>(settingsContent);
     return settings?.Accounts?.ToDictionary(account => account.LocationId) ?? new Dictionary<string, StorageAccount>();
 }
