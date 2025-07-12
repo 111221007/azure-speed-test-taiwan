@@ -57,10 +57,16 @@ void ConfigureApp(WebApplication app)
     }
     app.UseCors("AllowAll");
     
+    // Serve static files from wwwroot
+    app.UseStaticFiles();
+    
     // Add health check endpoint
     app.MapGet("/health", () => "OK");
     
     app.MapControllers();
+    
+    // Serve Angular app for all non-API routes
+    app.MapFallbackToFile("index.html");
 }
 
 [Route("api")]

@@ -1,8 +1,5 @@
 build:
   docker:
     web: Dockerfile
-  config:
-    NODE_ENV: production
-    ASPNETCORE_ENVIRONMENT: Production
 run:
-  web: cd api/AzureSpeed/out && dotnet AzureSpeed.dll --urls http://+:$PORT
+  web: dotnet AzureSpeed.dll

@@ -2,11 +2,6 @@
   "name": "azure-speed-test",
   "version": "1.0.0",
   "description": "Azure Speed Test Application",
-  "scripts": {
-    "build": "node build.js",
-    "start": "cd api/AzureSpeed/out && dotnet AzureSpeed.dll --urls http://+:$PORT",
-    "heroku-postbuild": "node build.js"
-  },
   "engines": {
     "node": "18.x",
     "npm": "9.x"
