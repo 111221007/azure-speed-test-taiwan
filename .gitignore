@@ -54,7 +54,6 @@ coverage/
 **/*.userosscache
 **/*.sln.docstates
 **/appsettings.Development.json
-**/appsettings.Production.json
 /api/AzureSpeed/Data/settings.json
 
 # PowerShell execution logs

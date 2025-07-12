@@ -7,6 +7,14 @@ using System.Collections.Concurrent;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Kestrel for Heroku
+builder.WebHost.ConfigureKestrel(options =>
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    options.ListenAnyIP(int.Parse(port));
+});
+
 ConfigureServices(builder);
 var app = builder.Build();
 ConfigureApp(app);
@@ -48,6 +56,10 @@ void ConfigureApp(WebApplication app)
         app.UseHsts();
     }
     app.UseCors("AllowAll");
+    
+    // Add health check endpoint
+    app.MapGet("/health", () => "OK");
+    
     app.MapControllers();
 }
 

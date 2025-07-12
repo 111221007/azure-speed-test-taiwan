@@ -4,7 +4,7 @@
   "description": "Azure Speed Test Application",
   "scripts": {
     "build": "node build.js",
-    "start": "cd api/AzureSpeed && dotnet AzureSpeed.dll --urls http://+:$PORT",
+    "start": "cd api/AzureSpeed/out && dotnet AzureSpeed.dll --urls http://+:$PORT",
     "heroku-postbuild": "node build.js"
   },
   "engines": {

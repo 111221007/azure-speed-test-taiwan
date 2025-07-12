@@ -22,7 +22,7 @@ if (!fs.existsSync(uiDir)) {
 process.chdir(uiDir);
 
 console.log('Installing UI dependencies...');
-exec('npm install', { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
+exec('npm ci --omit=dev', { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
     if (error) {
         console.error('Error installing UI dependencies:', error);
         console.error('stderr:', stderr);

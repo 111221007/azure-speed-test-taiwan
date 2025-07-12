@@ -11,15 +11,15 @@ RUN dotnet publish "AzureSpeed.csproj" -c Release -o /app/publish
 FROM node:20-alpine AS build-frontend
 WORKDIR /app
 COPY ["ui/package.json", "ui/package-lock.json*", "./"]
-RUN npm install
+RUN npm ci --omit=dev
 COPY ui/ .
 RUN npm run build
 
-# Use a .NET runtime image to serve both the backend and frontend
+# Use a .NET runtime image to serve the application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-# Install nginx
+# Install nginx and clean up
 RUN apt-get update && apt-get install -y nginx curl && rm -rf /var/lib/apt/lists/*
 
 # Copy custom nginx configuration
@@ -29,11 +29,30 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy frontend dist folder to nginx html directory
 COPY --from=build-frontend /app/dist/azure-speed-test/browser /usr/share/nginx/html
 
-# Copy backend from the correct build stage
+# Copy backend from the build stage
 COPY --from=build-backend /app/publish /app
 
-# Expose port 80 for the application
-EXPOSE 80
+# Set environment variables
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV NODE_ENV=production
 
-# Start nginx and the .NET Core app
-CMD ["sh", "-c", "dotnet /app/AzureSpeed.dll & nginx -g 'daemon off;'"]
+# Expose port (Heroku will provide PORT env var)
+EXPOSE $PORT
+
+# Create a startup script
+RUN echo '#!/bin/bash\n\
+# Update nginx to listen on the PORT provided by Heroku\n\
+if [ ! -z "$PORT" ]; then\n\
+    sed -i "s/80/$PORT/g" /etc/nginx/nginx.conf\n\
+fi\n\
+\n\
+# Start nginx in background\n\
+nginx -g "daemon off;" &\n\
+\n\
+# Start the .NET application\n\
+dotnet /app/AzureSpeed.dll --urls http://*:$PORT' > /start.sh
+
+RUN chmod +x /start.sh
+
+# Start the application
+CMD ["/start.sh"]
