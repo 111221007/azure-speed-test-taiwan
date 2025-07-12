@@ -12,8 +12,8 @@ RUN dotnet publish "AzureSpeed.csproj" -c Release -o /app/publish
 # Build Angular Frontend
 FROM node:20-alpine AS build-frontend
 WORKDIR /app
-COPY ["ui/package.json", "ui/package-lock.json*", "./"]
-RUN npm ci
+COPY ["ui/package.json", "./"]
+RUN npm install
 COPY ui/ .
 RUN npm run build:prod
 
