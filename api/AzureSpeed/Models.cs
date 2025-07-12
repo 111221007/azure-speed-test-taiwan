@@ -79,6 +79,7 @@ namespace AzureSpeed.WebApp
 
     public class Settings
     {
+        [JsonProperty("accounts")]
         public required IEnumerable<StorageAccount> Accounts { get; set; }
     }
 }

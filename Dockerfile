@@ -27,6 +27,9 @@ COPY --from=build-backend /app/publish /app
 # Copy built frontend to wwwroot
 COPY --from=build-frontend /app/dist/azure-speed-test/browser /app/wwwroot
 
+# Copy configuration files
+COPY --from=build-backend /src/backend/Data /app/Data
+
 # Set production environment
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV NODE_ENV=production

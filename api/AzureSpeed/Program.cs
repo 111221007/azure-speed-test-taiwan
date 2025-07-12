@@ -44,9 +44,38 @@ void ConfigureServices(WebApplicationBuilder builder)
 IDictionary<string, StorageAccount> LoadStorageAccounts(IWebHostEnvironment environment)
 {
     string settingsFilePath = Path.Combine(environment.ContentRootPath, "Data", "settings.json");
+    
+    // Check if settings file exists, if not create a default one
+    if (!File.Exists(settingsFilePath))
+    {
+        // Create Data directory if it doesn't exist
+        var dataDir = Path.Combine(environment.ContentRootPath, "Data");
+        if (!Directory.Exists(dataDir))
+        {
+            Directory.CreateDirectory(dataDir);
+        }
+        
+        // Create default settings file
+        var defaultSettings = new Settings
+        {
+            Accounts = new List<StorageAccount>
+            {
+                new StorageAccount
+                {
+                    Key = "edSoY+eK74ytXDXjIsNuybXU9DHC+dqhnjPSAfxNjxGJ0Mvc72dvYqW5KhKB129/UyYzxqiMMdxq+AStPPXKsQ==",
+                    Name = "azurespeedteststorage",
+                    LocationId = "japanwest"
+                }
+            }
+        };
+        
+        var defaultJson = JsonConvert.SerializeObject(defaultSettings, Formatting.Indented);
+        File.WriteAllText(settingsFilePath, defaultJson);
+    }
+    
     string settingsContent = File.ReadAllText(settingsFilePath);
     var settings = JsonConvert.DeserializeObject<Settings>(settingsContent);
-    return settings.Accounts.ToDictionary(account => account.LocationId);
+    return settings?.Accounts?.ToDictionary(account => account.LocationId) ?? new Dictionary<string, StorageAccount>();
 }
 
 void ConfigureApp(WebApplication app)
