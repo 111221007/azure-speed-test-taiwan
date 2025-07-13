@@ -97,6 +97,26 @@ export class LatencyComponent implements OnInit, OnDestroy {
     this.tableDataTop3 = [];
     this.chartDataSeries = [];
     this.xAxisTicks = [];
+    
+    // If we have regions, immediately start chart initialization
+    if (this.regions.length > 0) {
+      const now = new Date();
+      const currentSecond = now.getTime();
+      const secondArr = Array.from({ length: LatencyComponent.CHART_X_AXIS_LENGTH }, (_j, i) => {
+        return currentSecond - i * 1000
+      }).reverse();
+      
+      // Pre-initialize chart data structure for all selected regions
+      this.regions.forEach(region => {
+        if (region.storageAccountName) {
+          this.chartRawData.push({
+            storageAccountName: region.storageAccountName,
+            name: region.displayName,
+            series: secondArr.map((i) => ({ name: i, value: 0 }))
+          });
+        }
+      });
+    }
   }
 
   private startPingTimer(): void {
@@ -180,10 +200,14 @@ export class LatencyComponent implements OnInit, OnDestroy {
   }
 
   private recordPing(storageAccountName: string, duration: number): void {
-    if (duration <= 500) {
+    if (duration <= 2000) { // Increased threshold for better data capture
       this.latestPingTime.set(storageAccountName, duration);
       const history = this.pingHistory.get(storageAccountName) || [];
       history.push(duration);
+      // Keep only last 10 measurements for averaging
+      if (history.length > 10) {
+        history.shift();
+      }
       this.pingHistory.set(storageAccountName, history);
       this.refreshTable();
     }
@@ -218,31 +242,37 @@ export class LatencyComponent implements OnInit, OnDestroy {
     const secondArr = Array.from({ length: LatencyComponent.CHART_X_AXIS_LENGTH }, (_j, i) => {
       return currentSecond - i * 1000
     }).reverse()
-    this.tableData.forEach(({ storageAccountName, displayName }) => {
-      if (storageAccountName) {
-        let isNew = true
-
-        this.chartRawData.forEach((item: ChartRawData) => {
-          if (storageAccountName === item.storageAccountName) {
-            isNew = false
-          }
-        })
-        if (isNew) {
+    
+    // Process all selected regions that have data
+    this.regions.forEach(region => {
+      if (region.storageAccountName && this.latestPingTime.has(region.storageAccountName)) {
+        let existingChart = this.chartRawData.find(item => item.storageAccountName === region.storageAccountName);
+        
+        if (!existingChart) {
+          // Create new chart data for this region
+          const newChartData = {
+            storageAccountName: region.storageAccountName,
+            name: region.displayName,
+            series: secondArr.map((i) => ({ name: i, value: 0 }))
+          };
+          this.chartRawData.push(newChartData);
+          
+          // Add to chart display data
           this.chartDataSeries.push({
-            name: displayName,
+            name: region.displayName,
             series: secondArr.map((i) => ({
               name: this.formatXAxisTick(i),
               value: 0
             }))
-          })
-          this.chartRawData.push({
-            storageAccountName,
-            name: displayName,
-            series: secondArr.map((i) => ({ name: i, value: 0 }))
-          })
+          });
         }
       }
-    })
+    });
+
+    // Remove chart data for regions no longer selected
+    this.chartRawData = this.chartRawData.filter(item => 
+      this.regions.some(region => region.storageAccountName === item.storageAccountName)
+    );
 
     this.updateChartRawData(currentSecond)
     this.updateChartData()
@@ -274,6 +304,7 @@ export class LatencyComponent implements OnInit, OnDestroy {
         }))
       }
     })
+    // Force update by creating new array reference
     this.chartDataSeries = [...arr]
   }
 

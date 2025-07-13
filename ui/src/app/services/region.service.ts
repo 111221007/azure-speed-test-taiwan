@@ -17,12 +17,12 @@ export class RegionService {
   getAllRegions(): RegionModel[] {
     return publicRegionsJson
       .filter((region) => !region.restricted)
-      .map((regionData) => {
-        // Use a single storage account name for all regions
-        // This should match the AZURE_STORAGE_ACCOUNT_NAME environment variable
+      .map((regionData, index) => {
+        // Create unique storage account name for each region for chart purposes
+        // This ensures each region gets its own line in the chart
         return {
           ...regionData,
-          storageAccountName: 'azurespeedteststorage'
+          storageAccountName: `${regionData.name}-${index}-azurespeed`
         }
       })
   }
